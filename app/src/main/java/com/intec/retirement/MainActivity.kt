@@ -6,6 +6,7 @@ import com.intec.retirement.databinding.ActivityMainBinding
 import com.microsoft.appcenter.AppCenter
 import com.microsoft.appcenter.analytics.Analytics
 import com.microsoft.appcenter.crashes.Crashes
+import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,17 +22,32 @@ class MainActivity : AppCompatActivity() {
         )
 
         binding.calculateButton.setOnClickListener {
+            try {
 
-            val interestRate = binding.interestEditText.text.toString().toFloat()
-            val currentAge = binding.ageEditText.text.toString().toInt()
-            val retirementAge = binding.retirementEditText.text.toString().toInt()
 
-            if (interestRate <= 0) {
-                Analytics.trackEvent("Wrong_interest_rate")
-            }
+                val interestRate = binding.interestEditText.text.toString().toFloat()
+                val currentAge = binding.ageEditText.text.toString().toInt()
+                val retirementAge = binding.retirementEditText.text.toString().toInt()
+                val monthly = binding.monthlySavingsEditText.text.toString().toInt()
+                val current = binding.currentEditText.text.toString().toInt()
 
-            if (retirementAge <= currentAge) {
-                Analytics.trackEvent("Wrong_age")
+                val properties: HashMap<String, String> = HashMap()
+                properties["interest_rate"] = interestRate.toString()
+                properties["current_age"] = currentAge.toString()
+                properties["retirement_age"] = retirementAge.toString()
+                properties["monthly_savings"] = monthly.toString()
+                properties["current_savings"] = current.toString()
+
+
+                if (interestRate <= 0) {
+                    Analytics.trackEvent("Wrong_interest_rate", properties)
+                }
+
+                if (retirementAge <= currentAge) {
+                    Analytics.trackEvent("Wrong_age", properties)
+                }
+            } catch (ex: Exception) {
+                Analytics.trackEvent(ex.message)
             }
         }
     }
