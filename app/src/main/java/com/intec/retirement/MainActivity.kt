@@ -2,6 +2,7 @@ package com.intec.retirement
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.intec.retirement.databinding.ActivityMainBinding
 import com.microsoft.appcenter.AppCenter
 import com.microsoft.appcenter.analytics.Analytics
 import com.microsoft.appcenter.crashes.Crashes
@@ -9,7 +10,8 @@ import com.microsoft.appcenter.crashes.Crashes
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        val binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         AppCenter.start(
             application,
@@ -17,5 +19,9 @@ class MainActivity : AppCompatActivity() {
             Analytics::class.java,
             Crashes::class.java
         )
+
+        binding.calculateButton.setOnClickListener {
+            Crashes.generateTestCrash()
+        }
     }
 }
