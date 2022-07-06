@@ -21,7 +21,18 @@ class MainActivity : AppCompatActivity() {
         )
 
         binding.calculateButton.setOnClickListener {
-            Crashes.generateTestCrash()
+
+            val interestRate = binding.interestEditText.text.toString().toFloat()
+            val currentAge = binding.ageEditText.text.toString().toInt()
+            val retirementAge = binding.retirementEditText.text.toString().toInt()
+
+            if (interestRate <= 0) {
+                Analytics.trackEvent("Wrong_interest_rate")
+            }
+
+            if (retirementAge <= currentAge) {
+                Analytics.trackEvent("Wrong_age")
+            }
         }
     }
 }
