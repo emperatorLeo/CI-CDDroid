@@ -46,6 +46,8 @@ class MainActivity : AppCompatActivity() {
                 if (retirementAge <= currentAge) {
                     Analytics.trackEvent("Wrong_age", properties)
                 }
+
+                binding.resultTextView.text = "At the current rate of $interestRate%, saving\$$monthly a month"
             } catch (ex: Exception) {
                 Analytics.trackEvent(ex.message)
             }
