@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import com.microsoft.appcenter.AppCenter
 import com.microsoft.appcenter.analytics.Analytics
 import com.microsoft.appcenter.crashes.Crashes
@@ -22,8 +23,16 @@ class MainActivity : AppCompatActivity() {
             Analytics::class.java,
             Crashes::class.java
         )
+
+       val future = Crashes.hasCrashedInLastSession()
+        future.thenAccept{
+            if (it){
+                Toast.makeText(this,"Opps! sorry about that!",Toast.LENGTH_LONG).show()
+            }
+        }
        val button = findViewById<Button>(R.id.calculateButton)
        button.setOnClickListener {
+           Crashes.generateTestCrash()
             try {
 
                 val interestET = findViewById<EditText>(R.id.interestEditText)
